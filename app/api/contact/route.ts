@@ -27,8 +27,9 @@ export async function POST(req: Request) {
       : `[Portfolio Contact] New message from ${name}`;
 
     let delivered = false;
+    let activationNotice = false;
 
-    // ── METHOD 1: Nodemailer (if EMAIL_USER and EMAIL_PASS are configured) ──
+    // ── METHOD 1: Nodemailer (Direct Gmail SMTP if configured) ──
     if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
       try {
         const transporter = nodemailer.createTransport({
@@ -79,37 +80,48 @@ export async function POST(req: Request) {
       }
     }
 
-    // ── METHOD 2: Direct HTTP Relay Fallback (FormSubmit / Web3Forms) ──
+    // ── METHOD 2: Direct HTTP Relay Fallback (FormSubmit) ──
     if (!delivered) {
       try {
+        const originUrl = req.headers.get("origin") || req.headers.get("referer") || "https://heel-portfolio.vercel.app";
         const relayResponse = await fetch(`https://formsubmit.co/ajax/${receiverEmail}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
+            Referer: originUrl,
+            Origin: originUrl,
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
           },
           body: JSON.stringify({
             name,
             email,
             _subject: mailSubject,
-            message: `[From: ${name} (${email})]\n\nSubject: ${subject || "N/A"}\n\nMessage:\n${message}`,
+            message: `From: ${name} (${email})\nSubject: ${subject || "N/A"}\n\nMessage:\n${message}`,
             _template: "table",
+            _captcha: "false",
           }),
         });
 
-        if (relayResponse.ok) {
+        const data = await relayResponse.json().catch(() => null);
+
+        if (data && (data.success === "true" || data.success === true)) {
           delivered = true;
-        } else {
-          console.error("Relay returned non-ok status:", relayResponse.status);
+        } else if (data && typeof data.message === "string" && data.message.includes("Activation")) {
+          // First-time activation email sent to receiver
+          delivered = true;
+          activationNotice = true;
+        } else if (relayResponse.ok) {
+          delivered = true;
         }
       } catch (relayErr) {
-        console.error("Relay delivery failed:", relayErr);
+        console.error("Relay delivery error:", relayErr);
       }
     }
 
     if (!delivered) {
       return NextResponse.json(
-        { error: "Could not deliver transmission automatically. Please email heelsoni01@gmail.com directly." },
+        { error: "Could not deliver message automatically. Please reach out to heelsoni01@gmail.com directly." },
         { status: 500 }
       );
     }
@@ -117,14 +129,16 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         success: true,
-        message: "Message received successfully. Heel Soni will respond promptly.",
+        message: activationNotice
+          ? "Activation required: An activation email was sent to heelsoni01@gmail.com. Please click Activate in your inbox once to start receiving all messages."
+          : "Message transmitted successfully! Heel Soni will respond promptly.",
       },
       { status: 200 }
     );
   } catch (error) {
     console.error("Error processing contact form:", error);
     return NextResponse.json(
-      { error: "Failed to transmit message. Please try again or use direct email." },
+      { error: "Failed to transmit message. Please email heelsoni01@gmail.com directly." },
       { status: 500 }
     );
   }
