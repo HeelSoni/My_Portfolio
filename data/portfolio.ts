@@ -142,6 +142,18 @@ export const PORTFOLIO_DATA = {
       stats: "Multi-engine pattern detection"
     },
     {
+      id: "fashion-mnist",
+      title: "Fashion-MNIST Classifier",
+      subtitle: "Deep Learning Apparel Classification",
+      description:
+        "Deep convolutional neural network benchmarked against an MLP baseline on 70,000 fashion items, featuring Batch Normalization, Dropout regularization, and 91.28% test accuracy.",
+      category: "AI",
+      tech: ["Python", "TensorFlow", "Keras", "CNN", "NumPy", "Matplotlib"],
+      githubUrl: "https://github.com/HeelSoni/Fashion_MNIST_project",
+      featured: false,
+      stats: "91.28% CNN test accuracy"
+    },
+    {
       id: "heelthy",
       title: "Heelthy",
       subtitle: "3D Interactive Nutrition Experience",

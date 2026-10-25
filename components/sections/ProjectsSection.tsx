@@ -168,7 +168,7 @@ export function ProjectsSection() {
                       </a>
                     ) : (
                       <span className="font-mono-code text-foreground-subtle">
-                        Excel Modeling & Pivot Levers
+                        {project.isCaseStudy ? "Excel Modeling & Pivot Levers" : "Deep Learning / CNN"}
                       </span>
                     )}
 
