@@ -13,7 +13,7 @@
 
 **A cutting-edge, interactive 3D developer portfolio showcasing AI/ML engineering, Data Analytics, and Full-Stack development projects.**
 
-[Explore Live Demo](https://paper-pilot-five.vercel.app/) · [Report Bug](https://github.com/HeelSoni/My_Portfolio/issues) · [Request Feature](https://github.com/HeelSoni/My_Portfolio/issues)
+[Explore Live Demo](https://vercel.com/heel1/my-portfolio) · [Report Bug](https://github.com/HeelSoni/My_Portfolio/issues) · [Request Feature](https://github.com/HeelSoni/My_Portfolio/issues)
 
 </div>
 
@@ -126,7 +126,7 @@ CONTACT_RECEIVER=heelsoni01@gmail.com
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
+Open [https://vercel.com/heel1/my-portfolio](https://vercel.com/heel1/my-portfolio) in your browser to view the application.
 
 ### 5. Build for Production
 
@@ -141,7 +141,7 @@ npm start
 
 - **Heel Soni** — AI/ML Developer & Data Analyst
 - **GitHub**: [@HeelSoni](https://github.com/HeelSoni)
-- **Portfolio**: [Heel Soni Portfolio](https://github.com/HeelSoni/My_Portfolio)
+- **Portfolio**: [Heel Soni Portfolio](https://vercel.com/heel1/my-portfolio)
 - **Email**: [heelsoni01@gmail.com](mailto:heelsoni01@gmail.com)
 
 ---
